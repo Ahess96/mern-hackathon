@@ -53,6 +53,17 @@ orderSchema.statics.getCart = function(userId) {
   );
 };
 
+orderSchema.statics.getPaidCart = function(userId) {
+  // 'this' is bound to the model (don't use an arrow function)
+  // return the promise that resolves to a cart (the user's paid order)
+  console.log('getPaidCart function in order model')
+  return this.find(
+    // query
+    { user: userId, isPaid: true },
+    // update - in the case the order (cart) is upserted
+  );
+};
+
 // Instance methods are callable on the document (instance)
 orderSchema.methods.addItemToCart = async function(itemId) {
   const cart = this;

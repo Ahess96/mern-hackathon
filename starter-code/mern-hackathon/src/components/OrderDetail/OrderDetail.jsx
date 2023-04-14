@@ -2,14 +2,23 @@ import './OrderDetail.css';
 import LineItem from '../LineItem/LineItem';
 
 // Used to display the details of any order, including the cart (unpaid order)
-export default function OrderDetail({ order, handleChangeQty, handleCheckout }) {
+export default function OrderDetail({ order, handleChangeQty, handleCheckout, pastOrders }) {
   if (!order) return null;
+  // console.log(order, 'orders in orderDetail');
 
   const lineItems = order.lineItems.map(item =>
     <LineItem
       lineItem={item}
-      isPaid={order.isPaid}
+      isPaid={item.isPaid}
       handleChangeQty={handleChangeQty}
+      key={item._id}
+    />
+  );
+
+  const orderItems = pastOrders.map(item =>
+    <LineItem
+      lineItem={item}
+      isPaid={item.isPaid}
       key={item._id}
     />
   );
@@ -45,6 +54,17 @@ export default function OrderDetail({ order, handleChangeQty, handleCheckout }) 
           :
           <div className="hungry">Hungry?</div>
         }
+        <div className="line-item-container flex-ctr-ctr flex-col scroll-y">
+        {orderItems.length ?
+          <>
+            <h2>Past Orders</h2>
+            {orderItems}
+          </>
+          :
+          <div className="no-past-orders">No past orders found</div>
+        }
+      </div>
+        {pastOrders}
       </div>
     </div>
   );
